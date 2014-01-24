@@ -238,7 +238,6 @@ mod imp {
     use rt::global_heap::malloc_raw;
     use libc::{HANDLE, BOOL, LPSECURITY_ATTRIBUTES, c_void, DWORD, LPCSTR};
     use libc;
-    use ptr::RawPtr;
     use ptr;
     use sync::atomics;
 
