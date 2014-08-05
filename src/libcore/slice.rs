@@ -991,6 +991,24 @@ impl<'a, T> RandomAccessIterator<&'a T> for Items<'a, T> {
     }
 }
 
+impl<'a, T: Clone> PeekableIterator<&'a T> for Items<'a, T> {
+    #[inline]
+    fn peek(&self) -> Option<&'a T> {
+        unsafe {
+            if self.ptr == self.end {
+                None
+            } else {
+                if mem::size_of::<T>() == 0 {
+                    // Use a non-null pointer value
+                    Some(transmute(1u))
+                } else {
+                    Some(transmute(self.ptr))
+                }
+            }
+        }
+    }
+}
+
 /// Mutable slice iterator
 pub struct MutItems<'a, T> {
     ptr: *mut T,
