@@ -571,6 +571,13 @@ impl<A> DoubleEndedIterator<A> for Item<A> {
 
 impl<A> ExactSize<A> for Item<A> {}
 
+impl<A: Clone> PeekableIterator<A> for Item<A> {
+    #[inline]
+    fn peek(&self) -> Option<A> {
+        self.opt.clone()
+    }
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // Free functions
 /////////////////////////////////////////////////////////////////////////////

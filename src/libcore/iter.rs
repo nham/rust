@@ -1023,6 +1023,14 @@ impl<T: Clone> MinMaxResult<T> {
     }
 }
 
+/// A peekable iterator TODO: actually explain
+///
+/// TODO: More description goes here
+pub trait PeekableIterator<A>: Iterator<A> {
+    /// Yield an item without advancing the iterator
+    fn peek(&self) -> Option<A>;
+}
+
 /// A trait for iterators that are cloneable.
 pub trait CloneableIterator {
     /// Repeats an iterator endlessly
