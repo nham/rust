@@ -126,6 +126,23 @@ impl<K: fmt::Show + Ord, V: fmt::Show> fmt::Show for BTree<K, V> {
     }
 }
 
+impl<K: Clone + Ord, V: Clone> FromIterator<(K, V)> for BTree<K, V> {
+    fn from_iter<T: Iterator<(K, V)>>(iter: T) -> BTree<K, V> {
+        let mut map = BTree::new();
+        map.extend(iter);
+        map
+    }
+}
+
+impl<K: Clone + Ord, V: Clone> Extendable<(K, V)> for BTree<K, V> {
+    #[inline]
+    fn extend<T: Iterator<(K, V)>>(&mut self, mut iter: T) {
+        for (k, v) in iter {
+            self.insert(k, v);
+        }
+    }
+}
+
 
 //Node types
 //A node is either a LeafNode or a BranchNode, which contain either a Leaf or a Branch.
