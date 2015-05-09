@@ -107,9 +107,98 @@ construct an instance of the following type using only safe code:
 ```
 enum Empty {}
 ```
-"##
+"##,
 
+E0106: r##"
+(Background: The lifetime elision rules consider each lifetime in a function
+signature, whether it's elided or not, to be in a certain position, either
+*input position*, for function parameters, or *output position*, for the return
+type. For example the function:
+
+```
+fn hello<'a>(name: &'a str) -> (&'static str, &str) {
+    ("hello", name)
 }
+```
+
+has a signature with one lifetime in input position and two lifetimes in output
+position.
+
+The terms *input lifetime* and *output lifetime* are also used.)
+
+This error indicates that there was a lifetime elision error involving an elided
+output lifetime. The function signature has an elited output lifetime with
+either a) no input lifetimes, or b) multiple input lifetimes but the function
+is not a method with an `&self` or `&mut self` receiver (in which case the
+output lifetime is inferred to be the same as the lifetime of the `self`
+reference).
+
+Here are some examples of elision errors:
+
+```
+// No input lifetimes, ERROR.
+fn foo() -> &str { ... }
+
+// `x` and `y` have distinct lifetimes inferred, ERROR
+fn bar(x: &str, y: &str) -> &str { ... }
+
+// `y`'s lifetime is inferred to be distinct from `x`'s, ERROR
+fn baz<'a>(x: &'a str, y: &str) -> &str { ... }
+```
+
+
+TODO: Verify that these concerns are met:
+
+ - someone in #rust asked "I am running into [E0106] with rustc telling me "missing lifetime specifier". What is a lifetime specifier? And why is it not mentioned in the reference?"
+ - another person seemed to run into this error before they really understood what lifetimes were. I'm guessing it's out of scope to explain lifetimes from scratch in this diagnostic.
+ - as a result, I'm now thinking the above is entirely too technical. Should we even mention "lifetime elision" at all?
+ - the above isn't even completely correct. You also get E0106 when you're missing a lifetime on, for example, a struct: `struct Foo { x: &bool }`
+"##,
+
+E0107: r##"
+Wrong number of lifetimes in a type or trait or function?
+
+```rust
+struct Foo<'a> { x: &'a bool }
+struct Bar { x: bool }
+
+// error: wrong number of lifetime parameters: expected 1, found 0
+struct Baz { foo: Foo }
+
+// error: wrong number of lifetime parameters: expected 0, found 1
+struct Quux<'a> { bar: Bar<'a> }
+```
+
+Also, these cases illustrate that the lifetime elision RFC is not implemented
+for impl headers. From pnkfelix's audit (https://github.com/rust-lang/rust/issues/15838)
+
+```
+trait Foo<'a> { fn foo(&self) -> &'a u32; }
+struct Bar0(&'static u32, &'static u32);
+
+// error: wrong number of lifetime parameters: expected 1, found 0
+impl Foo for Bar0 { fn foo(&self) -> &u32 { self.0 } }
+```
+
+```
+trait Foo<'a> { fn foo(&self) -> &'a u32; }
+struct Bar1<'b>(&'b u32, &'b u32);
+
+/*
+E0107.rs:9:14: 9:18 error: wrong number of lifetime parameters: expected 1, found 0 [E0107]
+E0107.rs:9 impl Foo for Bar1 { fn foo(&self) -> &u32 { self.0 } }
+                        ^~~~
+E0107.rs:9:6: 9:9 error: wrong number of lifetime parameters: expected 1, found 0 [E0107]
+E0107.rs:9 impl Foo for Bar1 { fn foo(&self) -> &u32 { self.0 } }
+                ^~~
+*/
+impl Foo for Bar1 { fn foo(&self) -> &u32 { self.0 } }
+```
+
+
+"##
+}
+
 
 register_diagnostics! {
     E0023,
@@ -164,8 +253,6 @@ register_diagnostics! {
     E0102,
     E0103,
     E0104,
-    E0106,
-    E0107,
     E0116,
     E0117,
     E0118,
