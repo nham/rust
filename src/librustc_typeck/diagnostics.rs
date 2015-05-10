@@ -195,7 +195,38 @@ E0107.rs:9 impl Foo for Bar1 { fn foo(&self) -> &u32 { self.0 } }
 impl Foo for Bar1 { fn foo(&self) -> &u32 { self.0 } }
 ```
 
+"##,
 
+E0243: r##"
+This error indicates that not enough type parameters were found in a reference
+to a type or trait (or function?)
+
+In the following example, we try to define a struct `Bar` with a field of type
+`Foo`, but the type is missing a needed type parameter.
+
+```
+struct Foo<T> { x: T }
+
+struct Bar { x: Foo }
+```
+
+TODO: Do we need to talk about default type parameters?
+"##,
+
+E0244: r##"
+This error indicates that too many type parameters were found in a reference to
+a type or trait (or function?)
+
+In the following example, we try to define a struct `Bar`  with a field of type
+`Foo`, but two unneeded type parameters are also supplied.
+
+```
+struct Foo { x: bool }
+
+struct Bar<S, T> { x: Foo<S, T> }
+```
+
+TODO: Do we need to talk about default type parameters?
 "##
 }
 
@@ -345,8 +376,6 @@ register_diagnostics! {
     E0240,
     E0241,
     E0242, // internal error looking up a definition
-    E0243, // wrong number of type arguments
-    E0244, // wrong number of type arguments
     E0245, // not a trait
     E0246, // illegal recursive type
     E0247, // found module name used as a type
