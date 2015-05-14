@@ -265,6 +265,28 @@ RFC. It is, however, [currently unimplemented][iss15872].
 [iss15872]: https://github.com/rust-lang/rust/issues/15872
 "##,
 
+E0121: r##"
+When `_` is in a type, it can act as a placeholder for another type. The
+compiler interprets it as a request to infer the type. This enables partial
+type hints, as in the following example:
+
+```
+// x is a Vec<T> for some T. The compiler infers T.
+let x: Vec<_> = (0..4).collect();
+```
+
+However, in order to be consistent with Rust's lack of global type inference,
+type placeholders are disallowed by design in item signatures.
+
+Examples of this error include:
+
+```
+fn foo() -> _ { 5 } // error, explicitly write out the return type instead
+
+static BAR: _ = "test"; // error, explicitly write out the type instead
+```
+"##,
+
 E0131: r##"
 It is not possible to define `main` with type parameters, or even with function
 parameters. When `main` is present, it must take no arguments and return `()`.
@@ -458,6 +480,26 @@ The `Sized` trait is a special trait built-in to the compiler for types with a
 constant size known at compile-time. This trait is automatically implemented
 for types as needed by the compiler, and it is currently disallowed to
 explicitly implement it for a type.
+"##,
+
+E0371: r##"
+When `Trait2` is a subtrait of `Trait1` (for example, when `Trait2` has a
+definition like `trait Trait2: Trait1 { ... }`), it is not allowed to implement
+`Trait1` for `Trait2`. This is because `Trait2` already implements `Trait1` by
+definition, so it is not useful to do this.
+
+Example:
+
+```
+trait Foo { fn foo(&self) { } }
+trait Bar: Foo { }
+trait Baz: Bar { }
+
+impl Bar for Baz { } // error, `Baz` implements `Bar` by definition
+impl Foo for Baz { } // error, `Baz` implements `Bar` which implements `Foo`
+impl Baz for Baz { } // error, `Baz` (trivially) implements `Baz`
+impl Baz for Bar { } // Note: This is OK
+```
 "##
 
 }
@@ -514,7 +556,6 @@ register_diagnostics! {
     E0118,
     E0119,
     E0120,
-    E0121,
     E0122,
     E0123,
     E0124,
@@ -608,7 +649,6 @@ register_diagnostics! {
     E0367, // dropck forbid specialization to predicate not in struct/enum
     E0368, // binary operation `<op>=` cannot be applied to types
     E0369, // binary operation `<op>` cannot be applied to types
-    E0371, // impl Trait for Trait is illegal
     E0372, // impl Trait for Trait where Trait is not object safe
     E0374, // the trait `CoerceUnsized` may only be implemented for a coercion
            // between structures with one field being coerced, none found
