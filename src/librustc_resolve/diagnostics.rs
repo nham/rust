@@ -197,6 +197,58 @@ See the Types section of the reference for more information about the primitive
 types:
 
 http://doc.rust-lang.org/reference.html#types
+"##,
+
+E0378: r##"
+TODO: overview of the error.
+
+Also needs to incorporate the "Could not find Foob in foo" error example.
+
+One instance where this can happen is:
+
+```
+mod foo {
+    fn bar() {
+        // error: Use of undeclared type or module `std::mem`
+        let v: &[u8] = unsafe { std::mem::transmute("L") };
+    }
+}
+
+fn main() {}
+```
+
+To fix this, you can import `std::mem`, or use an absolute path instead:
+
+```
+// One fix
+mod foo {
+    use std::mem;
+    fn bar() {
+        let v: &[u8] = unsafe { mem::transmute("L") };
+    }
+}
+
+// Another fix
+mod foo {
+    fn bar() {
+        let v: &[u8] = unsafe { ::std::mem::transmute("L") };
+    }
+}
+```
+
+Here's another example where you might run into this error:
+
+```
+enum Foo {
+    A(u32),
+    B(u32),
+}
+
+fn main() {
+    // error: Use of undeclared type or module `Foob`
+    let x: Foo = Foob::A(5);
+}
+```
 "##
 
 }
@@ -209,6 +261,5 @@ register_diagnostics! {
     E0257,
     E0258,
     E0364, // item is private
-    E0365, // item is private
-    E0378  // failed to resolve. Use of undeclared type or module
+    E0365  // item is private
 }
