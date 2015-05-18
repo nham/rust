@@ -2909,8 +2909,9 @@ impl<'a, 'tcx> Resolver<'a, 'tcx> {
                     }
                 };
 
-                self.resolve_error(span, &format!("failed to resolve. {}",
-                                                 msg));
+                if self.emit_errors {
+                    span_err!(self.session, span, E0378, "failed to resolve. {}", msg);
+                }
                 return None;
             }
             Indeterminate => panic!("indeterminate unexpected"),

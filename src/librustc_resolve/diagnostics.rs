@@ -209,5 +209,6 @@ register_diagnostics! {
     E0257,
     E0258,
     E0364, // item is private
-    E0365  // item is private
+    E0365, // item is private
+    E0378  // failed to resolve. Use of undeclared type or module
 }
