@@ -116,6 +116,37 @@ let x_is_nonzero = x as bool;
 ```
 "##,
 
+E0055: r##"
+During a method call, a value is automatically dereferenced as many times as
+needed to make the value's type match the method's receiver. The catch is that
+the compiler will only attempt to dereference a number of times up to the
+recursion limit (which can be set via the `recursion_limit` attribute).
+
+For a somewhat artificial example:
+
+```
+#![recursion_limit="2"]
+
+struct Foo;
+
+impl Foo {
+    fn foo(&self) {}
+}
+
+fn main() {
+    let foo = Foo;
+    let ref_foo = &&Foo;
+
+    // error, reached the recursion limit while auto-dereferencing &&Foo
+    ref_foo.foo();
+}
+```
+
+One fix may be to increase the recursion limit. Note that it is possible to
+create an infinite recursion of dereferencing, in which case the only fix is to
+somehow break the recursion.
+"##,
+
 E0062: r##"
 This error indicates that during an attempt to build a struct or struct-like
 enum variant, one of the fields was specified more than once. Each field should
@@ -456,6 +487,12 @@ it has been disabled for now.
 [iss20126]: https://github.com/rust-lang/rust/issues/20126
 "##,
 
+E0192: r##"
+Negative impls are only allowed for traits with default impls. For more
+information see the [opt-in builtin traits RFC](https://github.com/rust-lang/
+rfcs/blob/master/text/0019-opt-in-builtin-traits.md).
+"##,
+
 E0197: r##"
 Inherent implementations (one that do not implement a trait but provide
 methods associated with a type) are always safe because they are not
@@ -773,7 +810,6 @@ register_diagnostics! {
     E0040, // explicit use of destructor method
     E0044, // foreign items may not have type parameters
     E0045, // variadic function must have C calling convention
-    E0055, // method has an incompatible type for trait
     E0057, // method has an incompatible type for trait
     E0059,
     E0060,
@@ -829,7 +865,6 @@ register_diagnostics! {
     E0189, // can only cast a boxed pointer to a boxed object
     E0190, // can only cast a &-pointer to an &-object
     E0191, // value of the associated type must be specified
-    E0192, // negative imples are allowed just for `Send` and `Sync`
     E0193, // cannot bound type where clause bounds may only be attached to types
            // involving type parameters
     E0194,
