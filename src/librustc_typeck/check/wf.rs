@@ -123,10 +123,9 @@ impl<'ccx, 'tcx> CheckTypeWellFormedVisitor<'ccx, 'tcx> {
                 reject_non_type_param_bounds(ccx.tcx, item.span, &trait_predicates);
                 if ty::trait_has_default_impl(ccx.tcx, local_def(item.id)) {
                     if !items.is_empty() {
-                        ccx.tcx.sess.span_err(
-                            item.span,
-                            "traits with default impls (`e.g. unsafe impl Trait for ..`) must \
-                            have no methods or associated items")
+                        span_err!(ccx.tcx.sess, item.span, E0378,
+                                  "traits with default impls (`e.g. unsafe impl \
+                                  Trait for ..`) must have no methods or associated items")
                     }
                 }
             }

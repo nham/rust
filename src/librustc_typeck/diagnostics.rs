@@ -787,6 +787,12 @@ Trait2 { ... }`) does not work if the trait is not object-safe. Please see the
 [RFC 255] for more details on object safety rules.
 
 [RFC 255]: https://github.com/rust-lang/rfcs/pull/255
+"##,
+
+E0378: r##"
+Default impls are only allowed for traits with no methods or associated items.
+For more information see the [opt-in builtin traits RFC](https://github.com/rust
+-lang/rfcs/blob/master/text/0019-opt-in-builtin-traits.md).
 "##
 
 }
