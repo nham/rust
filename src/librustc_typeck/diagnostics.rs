@@ -714,6 +714,11 @@ const C: [u32; u8::MAX + f64::EPSILON] = [];
 ```
 "##,
 
+E0318: r##"
+Default impls for a trait must be in the same crate where the trait was defined,
+because TODO. For more information see RFC.
+"##,
+
 E0322: r##"
 The `Sized` trait is a special trait built-in to the compiler for types with a
 constant size known at compile-time. This trait is automatically implemented
@@ -916,7 +921,6 @@ register_diagnostics! {
     E0246, // illegal recursive type
     E0247, // found module name used as a type
     E0248, // found value name used as a type
-    E0318, // can't create default impls for traits outside their crates
     E0319, // trait impls for defaulted traits allowed just for structs/enums
     E0320, // recursive overflow during dropck
     E0321, // extended coherence rules for defaulted traits violated
