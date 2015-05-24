@@ -11,5 +11,14 @@
 #![allow(non_snake_case)]
 
 register_diagnostics! {
-    E0373 // closure may outlive current fn, but it borrows {}, which is owned by current fn
+    E0373, // closure may outlive current fn, but it borrows {}, which is owned by current fn
+    E0378, // use/capture of possibly uninitialized variable
+    E0379, // use of partially/collaterally moved value
+    E0380, // partial reinitialization of uninitialized structure
+    E0381, // reassignment of immutable variable
+    E0382, // {} in an aliasable location
+    E0383, // {} in an immutable container
+    E0384, // {} in a captured outer variable in an `Fn` closure
+    E0385, // {} in a static location
+    E0386  // {} in a `&` reference
 }
