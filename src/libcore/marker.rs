@@ -169,7 +169,9 @@ pub trait Copy : Clone {
 ///
 /// The precise definition is: a type `T` is `Sync` if `&T` is
 /// thread-safe. In other words, there is no possibility of data races
-/// when passing `&T` references between threads.
+/// when passing `&T` references between threads. (For background on
+/// data races, see [this section][data-race] of TRPL.)
+/// [data-race]: https://doc.rust-lang.org/stable/book/references-and-borrowing.html#the-rules
 ///
 /// As one would expect, primitive types like `u8` and `f64` are all
 /// `Sync`, and so are simple aggregate types containing them (like
