@@ -596,9 +596,12 @@ fn highlight_lines(err: &mut EmitterWriter,
 
     // Calculate the widest number to format evenly and fix #11715
     assert!(display_line_infos.len() > 0);
-    let mut max_line_num = display_line_infos[display_line_infos.len() - 1].line_index + 1;
+    let mut max_line_num = display_line_infos.last().unwrap().line_index + 1;
     let mut digits = 0;
-    while max_line_num > 0 { max_line_num /= 10; digits += 1; }
+    while max_line_num > 0 {
+        max_line_num /= 10;
+        digits += 1;
+    }
     // Print the offending lines
     for (line_info, line) in display_line_infos.iter().zip(display_line_strings.iter()) {
         try!(write!(&mut err.dst, "{}:{:>width$} {}\n",
