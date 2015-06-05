@@ -8,6 +8,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+// ignore-test
+
 // check-stdout
 // error-pattern:thread 'test_foo' panicked at
 // compile-flags: --test
