@@ -1,4 +1,4 @@
-// Copyright 2012 The Rust Project Developers. See the COPYRIGHT
+// Copyright 2012-2015 The Rust Project Developers. See the COPYRIGHT
 // file at the top-level directory of this distribution and at
 // http://rust-lang.org/COPYRIGHT.
 //
@@ -8,8 +8,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-// error-pattern: unresolved name `m1::a`. Did you mean `args`?
-
 mod m1 {}
 
-fn main(args: Vec<String>) { log(debug, m1::a); }
+fn main(args: Vec<String>) {
+    println!("{:?}", m1::a); //~ ERROR unresolved name `m1::a`. Did you mean `args`?
+}
