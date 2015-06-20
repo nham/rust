@@ -981,7 +981,7 @@ From [RFC 246]:
  > It is illegal for a static to reference another static by value. It is
  > required that all references be borrowed.
 
-[RFC 246]: https://github.com/rust-lang/rfcs/pull/246
+[RFC 246]: https://github.com/rust-lang/rfcs/blob/master/text/0246-const-vs-static.md
 "##,
 
 E0397: r##"

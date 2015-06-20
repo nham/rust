@@ -612,7 +612,7 @@ Furthermore, the syntax is changing to use `in` instead of `box`. See [RFC 470]
 and [RFC 809] for more details.
 
 [RFC 470]: https://github.com/rust-lang/rfcs/pull/470
-[RFC 809]: https://github.com/rust-lang/rfcs/pull/809
+[RFC 809]: https://github.com/rust-lang/rfcs/blob/master/text/0809-box-and-in-for-stdlib.md
 "##,
 
 E0067: r##"
@@ -1051,7 +1051,7 @@ struct Bar<'a> {
 
 More details can be found in [RFC 438].
 
-[RFC 438]: https://github.com/rust-lang/rfcs/pull/438
+[RFC 438]: https://github.com/rust-lang/rfcs/blob/master/text/0438-precedence-of-plus.md
 "##,
 
 E0184: r##"
@@ -1213,7 +1213,7 @@ E0202: r##"
 Inherent associated types were part of [RFC 195] but are not yet implemented.
 See [the tracking issue][iss8995] for the status of this implementation.
 
-[RFC 195]: https://github.com/rust-lang/rfcs/pull/195
+[RFC 195]: https://github.com/rust-lang/rfcs/blob/master/text/0195-associated-items.md
 [iss8995]: https://github.com/rust-lang/rust/issues/8995
 "##,
 
@@ -1447,14 +1447,14 @@ Trying to implement a trait for a trait object (as in `impl Trait1 for
 Trait2 { ... }`) does not work if the trait is not object-safe. Please see the
 [RFC 255] for more details on object safety rules.
 
-[RFC 255]: https://github.com/rust-lang/rfcs/pull/255
+[RFC 255]: https://github.com/rust-lang/rfcs/blob/master/text/0255-object-safety.md
 "##,
 
 E0379: r##"
 Trait methods cannot be declared `const` by design. For more information, see
 [RFC 911].
 
-[RFC 911]: https://github.com/rust-lang/rfcs/pull/911
+[RFC 911]: https://github.com/rust-lang/rfcs/blob/master/text/0911-const-fn.md
 "##,
 
 E0380: r##"
